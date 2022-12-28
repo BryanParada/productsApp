@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/ui/input_decorations.dart';
 import 'package:products_app/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -30,7 +31,8 @@ class LoginScreen extends StatelessWidget {
                 ),
 
                 SizedBox( height: 50,),
-                Text('Create new account', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+                Text('Create new account', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                SizedBox( height: 50,),
              ],
           )
         ),
@@ -52,26 +54,45 @@ class _LoginForm extends StatelessWidget {
             TextFormField(
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.deepPurple
-                  )
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.deepPurple,
-                    width: 2
-                  )
-                ),
+              decoration: InputDecorations.authInputDecoration(
                 hintText: 'john.doe@gmail.com',
                 labelText: 'Email',
-                labelStyle: TextStyle(
-                  color: Colors.grey
-                ),
-                prefixIcon: Icon( Icons.alternate_email_sharp, color: Colors.deepPurple)
+                prefixIcon: Icons.alternate_email_rounded
               ),
-            )
+            ),
+
+            SizedBox(height: 30,),
+
+            TextFormField(
+              autocorrect: false,
+              obscureText: true,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecorations.authInputDecoration(
+                 hintText: '****',
+                labelText: 'Password',
+                prefixIcon: Icons.lock_outline
+              ),
+            ),
+
+            SizedBox(height: 30,),
+
+
+            MaterialButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              disabledColor: Colors.grey,
+              elevation: 0,
+              color: Colors.deepPurple,
+              child: Container(
+                padding: EdgeInsets.symmetric( horizontal: 80, vertical: 15),
+                child: Text( 
+                  'Enter',
+                  style: TextStyle( color: Colors.white)
+                )
+              ),
+              onPressed: (){
+                //TODO: login form
+              }
+              )
 
           ],
         )
