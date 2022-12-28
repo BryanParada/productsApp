@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/providers/login_form_provider.dart';
 import 'package:products_app/ui/input_decorations.dart';
 import 'package:products_app/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
    
@@ -24,7 +26,11 @@ class LoginScreen extends StatelessWidget {
                       Text('Login', style: Theme.of(context).textTheme.headline4),
                       SizedBox(height: 30,),
 
-                      _LoginForm(),
+                      ChangeNotifierProvider(
+                        create: ( _ ) => LoginFormProvider(),
+                        child: _LoginForm() 
+                        ),
+                      //_LoginForm(),
 
                     ],
                   )
@@ -45,9 +51,12 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final loginForm = Provider.of<LoginFormProvider>(context);
+
     return Container(
       child: Form(
-        //TODO: mantener la referencia al KEY
+        key: loginForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
 
         child: Column(
@@ -61,6 +70,7 @@ class _LoginForm extends StatelessWidget {
                 labelText: 'Email',
                 prefixIcon: Icons.alternate_email_rounded
               ),
+              onChanged: (value ) => loginForm.email = value,
               validator: ( value ) {
 
                   String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -84,6 +94,7 @@ class _LoginForm extends StatelessWidget {
                 labelText: 'Password',
                 prefixIcon: Icons.lock_outline
               ),
+              onChanged: (value ) => loginForm.password = value,
               validator: ( value ) {
  
                   // if ( value != null && value.length >= 6) return null; 
@@ -112,7 +123,9 @@ class _LoginForm extends StatelessWidget {
                 )
               ),
               onPressed: (){
-                //TODO: login form
+               if ( !loginForm.isValidForm()) return;
+
+               Navigator.pushReplacementNamed(context, 'home');
               }
               )
 
