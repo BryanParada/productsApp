@@ -3,7 +3,7 @@ import 'package:products_app/screens/screens.dart';
 import 'package:products_app/services/services.dart';
 import 'package:provider/provider.dart'; 
 
-void main() => runApp(const MyApp());
+void main() => runApp(  AppState());
 
 class AppState extends StatelessWidget { 
 
