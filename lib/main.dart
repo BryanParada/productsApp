@@ -3,7 +3,15 @@ import 'package:products_app/screens/screens.dart';
 import 'package:products_app/services/services.dart';
 import 'package:provider/provider.dart'; 
 
-void main() => runApp(  AppState());
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future<void> main() async{
+  await dotenv.load();
+
+  //*se utiliza appState para obligar a que sea lo primero que se inicialice
+  runApp(AppState()); //MyApp
+
+}
 
 class AppState extends StatelessWidget { 
 
