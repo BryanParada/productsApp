@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -94,13 +96,17 @@ class _ProductScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon( Icons.save_outlined),
-        onPressed: () async {
+        child: productService.isSaving
+        ? CircularProgressIndicator( color: Colors.white)
+        : Icon( Icons.save_outlined),
+        onPressed: productService.isSaving
+        ? null
+        : () async {
           if ( !productForm.isValidForm() ) return;
 
           final String? imageUrl = await productService.uploadImage();
 
-          print(imageUrl);
+          if ( imageUrl != null) productForm.product.picture = imageUrl;
           
 
           await productService.saveOrCreateProduct(productForm.product);
