@@ -4,6 +4,8 @@ import 'package:products_app/ui/input_decorations.dart';
 import 'package:products_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../services/services.dart';
+
 class RegisterScreen extends StatelessWidget {
    
   const RegisterScreen({Key? key}) : super(key: key);
@@ -135,17 +137,25 @@ class _LoginForm extends StatelessWidget {
               onPressed: loginForm.isLoading ? null : ()async{
 
                 FocusScope.of(context).unfocus();
+                final authService = Provider.of<AuthService>(context, listen: false);
 
                if ( !loginForm.isValidForm()) return;
 
                 loginForm.isLoading = true;
 
-                await Future.delayed(Duration(seconds: 2));
-
+                //await Future.delayed(Duration(seconds: 2));
+ 
                 //TODO: validar si es el login correcto
-                loginForm.isLoading = false;
-                
-                 Navigator.pushReplacementNamed(context, 'home');
+                final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
+
+                if (errorMessage == null){
+                      Navigator.pushReplacementNamed(context, 'home');
+                } else {
+                  //TODO: mostar error en pantalla
+                  print(errorMessage);
+                } 
+                loginForm.isLoading = false; 
+                 
               }
               )
 

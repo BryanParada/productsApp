@@ -9,8 +9,9 @@ class AuthService extends ChangeNotifier {
   final String _baseURL = dotenv.env['BASE_URL'].toString();
   final String _fireBaseToken = dotenv.env['FIREBASE_API_KEY'].toString();
 
-  Future<String?> createUser( String email, String password) async{
-
+  //Si retornamos algo es un error, sino todo bien
+  Future<String?> createUser( String email, String password) async{ 
+    
     final Map<String, dynamic> authData = {
       'email': email,
       'password': password
@@ -23,7 +24,15 @@ class AuthService extends ChangeNotifier {
     final resp = await http.post(url, body: json.encode( authData ));
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
 
-    print(decodedResp);
+    //print(decodedResp);
+
+    if ( decodedResp.containsKey('idToken')){
+        //Token hay que guardarlo en un lugar seguro
+        // return decodedResp['idToken'];
+        return null;
+    }else{
+        return decodedResp['error']['message'];
+    }
     
 
   }
