@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:products_app/providers/product_form_provider.dart';
 import 'package:products_app/services/services.dart';
 import 'package:products_app/ui/input_decorations.dart';
@@ -14,7 +15,7 @@ class ProductScreen extends StatelessWidget {
     final productService = Provider.of<ProductsService>(context);
 
     return ChangeNotifierProvider(
-      create: ( _ ) => ProductFormProvider(productService.selectedProduct),
+      create: ( _ ) => ProductFormProvider(productService.selectedProduct!),
       child: _ProductScreenBody(productService: productService)
       );
   }
@@ -32,6 +33,10 @@ class _ProductScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body:SingleChildScrollView(
+        //esta opcion oculta el teclado al hacer scroll
+        //no se recomienda puesto que usuario puede mover intencionalmente para tener mas espacio
+        //keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        
         child: Column(
           children: [
             
@@ -98,8 +103,8 @@ class _ProductForm extends StatelessWidget {
               SizedBox(height: 10,),
 
               TextFormField(
-                initialValue: product?.name,
-                onChanged: ( value ) => product?.name = value,
+                initialValue: product.name,
+                onChanged: ( value ) => product.name = value,
                 validator:(value) {
                   if ( value == null || value.length < 1)
                   return 'Name is required';
@@ -113,12 +118,15 @@ class _ProductForm extends StatelessWidget {
               SizedBox(height: 30,),
 
               TextFormField(
-                initialValue: '${product?.price}',
+                initialValue: '${product.price}',
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                ],
                 onChanged: ( value ) {
                   if ( double.tryParse(value) == null){
-                    product?.price = 0;
+                    product.price = 0;
                   } else {
-                    product?.price = double.parse(value);
+                    product.price = double.parse(value);
                   }
                 }, 
                 keyboardType: TextInputType.number,
@@ -131,12 +139,12 @@ class _ProductForm extends StatelessWidget {
               SizedBox(height: 30,),
 
               SwitchListTile(
-                value: product!.available,
+                value: product.available,
                 title: Text('Available'),
                 activeColor: Colors.indigo,
-                onChanged: ( value) {
-                  //TODO: pendiente
-                } 
+                //onChanged: ( value) => productForm.updateAvailability(value)
+                // ===
+                onChanged: productForm.updateAvailability
               ),
 
               SizedBox(height: 30,)

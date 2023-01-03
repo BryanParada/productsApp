@@ -11,9 +11,15 @@ class ProductFormProvider extends ChangeNotifier {
 
   GlobalKey<FormState> formKey = new GlobalKey<FormState>();
 
-  Product? product;
+  Product product;
   //constructor            v debe ser una copia para evitar referncia
   ProductFormProvider( this.product);
+
+  updateAvailability(bool value){
+    print(value);
+    this.product.available = value;
+    notifyListeners();
+  }
 
   bool isValidForm(){
 
