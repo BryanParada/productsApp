@@ -76,7 +76,7 @@ class _ProductScreenBody extends StatelessWidget {
                       }
 
                       print('hay imagen ${pickedFile.path}');
-                      
+                      productService.updateSelectedProductImage(pickedFile.path);
 
                     },
                     icon: Icon(Icons.camera_alt_outlined, color: Colors.white)
