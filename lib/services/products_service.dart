@@ -11,6 +11,7 @@ class ProductsService extends ChangeNotifier {
   final List<Product> products = [];
   Product? selectedProduct; //tambien se puede usar late en vez de ?
   bool isLoading = true;
+  bool isSaving = false;
 
   //instancia
   ProductsService(){
@@ -41,6 +42,41 @@ class ProductsService extends ChangeNotifier {
 
     return this.products;
     
+
+  }
+
+  Future saveOrCreateProduct( Product product) async{
+
+    isSaving = true;
+    notifyListeners();
+
+    if ( product.id == null){
+      // es necesario crear
+
+    }else{
+      //actualizar
+      await this.updateProduct(product);
+    }
+
+
+
+    isSaving = false;
+    notifyListeners();
+  }
+
+  Future<String> updateProduct( Product product) async{
+
+    final url = Uri.https( _baseUrl, 'products/${product.id}.json');
+    final resp = await http.put(url, body: product.toJson() );
+    final decodedData = resp.body;
+
+    print(decodedData);
+    
+  //TODO: actualizar la lista de productos
+
+    return product.id!;
+
+
 
   }
 
