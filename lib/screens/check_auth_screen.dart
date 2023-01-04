@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:products_app/screens/screens.dart';
 import 'package:products_app/services/services.dart';
 import 'package:provider/provider.dart';
  
@@ -20,14 +21,38 @@ class CheckAuthScreen extends StatelessWidget {
             if ( !snapshot.hasData)
             return Text('Wait');
 
-            // if ( snapshot.data == ''){
+              if ( snapshot.data == ''){
 
-            // }
+                  Future.microtask(() {
+                    
+                    Navigator.pushReplacement(context, PageRouteBuilder(
+                        // animaciones 1  2   3
+                        pageBuilder: ( _, __, ___) => LoginScreen(),
+                        transitionDuration: Duration( seconds: 0)
+                        )
+                      );
 
-            Future.microtask(() {
-              Navigator.of(context).pushReplacementNamed('login');
+                    //Navigator.of(context).pushReplacementNamed('login');
+ 
+                  });
+              } else{
 
-            });
+                    Future.microtask(() {
+                    
+                    Navigator.pushReplacement(context, PageRouteBuilder(
+                        // animaciones 1  2   3
+                        pageBuilder: ( _, __, ___) => HomeScreen(),
+                        transitionDuration: Duration( seconds: 0)
+                        )
+                      );
+
+                    //Navigator.of(context).pushReplacementNamed('login');
+ 
+                  });
+
+
+              }
+
 
             return Container();
           }
