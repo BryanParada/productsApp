@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
 
   final String _baseURL = dotenv.env['BASE_URL'].toString();
   final String _fireBaseToken = dotenv.env['FIREBASE_API_KEY'].toString();
+
+  final storage = new FlutterSecureStorage();
 
   //Si retornamos algo es un error, sino todo bien
   Future<String?> createUser( String email, String password) async{ 
@@ -28,6 +31,8 @@ class AuthService extends ChangeNotifier {
 
     if ( decodedResp.containsKey('idToken')){
         //Token hay que guardarlo en un lugar seguro
+        await storage.write(key: 'token', value: decodedResp['idToken']); 
+
         // return decodedResp['idToken'];
         return null;
     }else{
@@ -54,12 +59,19 @@ class AuthService extends ChangeNotifier {
  
     if ( decodedResp.containsKey('idToken')){
         //Token hay que guardarlo en un lugar seguro
+        await storage.write(key: 'token', value: decodedResp['idToken']); 
         // return decodedResp['idToken'];
         return null;
     }else{
         return decodedResp['error']['message'];
     }
     
+
+  }
+
+  Future logout() async{ 
+    await storage.delete(key: 'token'); 
+    return;
 
   }
 
