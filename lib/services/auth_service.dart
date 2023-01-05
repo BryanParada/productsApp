@@ -17,7 +17,8 @@ class AuthService extends ChangeNotifier {
     
     final Map<String, dynamic> authData = {
       'email': email,
-      'password': password
+      'password': password,
+      'returnSecureToken': true
     };
 
     final url = Uri.https(_baseURL, '/v1/accounts:signUp', {
@@ -47,7 +48,8 @@ class AuthService extends ChangeNotifier {
     
     final Map<String, dynamic> authData = {
       'email': email,
-      'password': password
+      'password': password,
+      'returnSecureToken': true
     };
 
     final url = Uri.https(_baseURL, '/v1/accounts:signInWithPassword', {
@@ -78,7 +80,7 @@ class AuthService extends ChangeNotifier {
   Future<String> readToken() async{
 
     return await storage.read( key: 'token') ??  '';
-    
+
   }
 
 

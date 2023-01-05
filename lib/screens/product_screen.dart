@@ -109,7 +109,9 @@ class _ProductScreenBody extends StatelessWidget {
           if ( imageUrl != null) productForm.product.picture = imageUrl;
           
 
-          await productService.saveOrCreateProduct(productForm.product);
+          await productService.saveOrCreateProduct(productForm.product); 
+              NotificationsService.showSnackbar('Saved successfully', 'ok'); 
+          
         },
       ),
     );
